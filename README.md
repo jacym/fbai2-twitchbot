@@ -24,7 +24,7 @@ CLIENT_ID can be found after you create an app on your Twitch account.
 Then run the bot using:
 `pipenv run python Autobot.py run`
 
-###Cmd Line Chat Test Setup
+### Cmd Line Chat Test Setup
 If the goal is just to try out the automod functionality without connecting to a Twitch chat simply fill in the above .env file with lorem ipsum data except for the Wit token.
 
 Then run the bot using:
