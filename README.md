@@ -4,11 +4,13 @@ An automated moderator service using Wit AI for Twitch live chat. Initially buil
 ## Setup
 ###Full Twitch Setup
 ####Requirements:
+- Python 3.8
 - A Twitch account authorized to create bots
 - Your Twitch OAuth token
 
 Your pipenv .env file should contain the following information:
 ```
+# .env
 TMI_TOKEN=oauth: YOUR TWITCH OAUTH TOKEN
 CLIENT_ID= YOUR TWITCH CLIENT ID
 BOT_NICK=BOT NICK NAME
