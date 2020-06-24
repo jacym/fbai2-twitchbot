@@ -2,8 +2,8 @@
 An automated moderator service using Wit AI for Twitch live chat. Initially built for Facebook Hackathon.
 
 ## Setup
-###Full Twitch Setup
-####Requirements:
+### Full Twitch Setup
+#### Requirements:
 - Python 3.8
 - A Twitch account authorized to create bots
 - Your Twitch OAuth token

@@ -149,7 +149,7 @@ async def event_message(ctx):
     #send wit api message and respond with json predictions if not a command message
     if ctx.content[0] != '!':
         res = witClient.message(ctx.content)
-        print(res)
+        #print(res)
         if len(res['intents']) > 0:
             results = moderate(res,ctx.author.name)
             for message in results:
