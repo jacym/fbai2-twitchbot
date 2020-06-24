@@ -8,6 +8,8 @@ An automated moderator service using Wit AI for Twitch live chat. Initially buil
 - A Twitch account authorized to create bots
 - Your Twitch OAuth token
 
+Firstly, create a .env file in the same directory as the files in this repository.
+
 Your pipenv .env file should contain the following information:
 ```
 # .env
@@ -25,10 +27,10 @@ Then run the bot using:
 `pipenv run python Autobot.py run`
 
 ### Cmd Line Chat Test Setup
-If the goal is just to try out the automod functionality without connecting to a Twitch chat simply fill in the above .env file with lorem ipsum data except for the Wit token.
+If the goal is just to try out the AutoMod functionality without connecting to a Twitch chat simply fill in the above .env file with filler data on each line except for the Wit token.
 
 Then run the bot using:
 `pipenv run python Autobot.py test`
 
-This will create a command line chat for you to emulate a chat experience and demonstrate the automod capabilities.
+This will create a command line chat for you to emulate a chat experience and demonstrate the AutoMod capabilities.
 
