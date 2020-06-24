@@ -15,11 +15,11 @@ bot = commands.Bot(
 enabledCommands = {
     'test':'test Response',
     'toxicity': 'AutoMod has detected toxicity from ',
-    'toxicity_racism': 'Message logged for review, AutoMod has detected racism from ',
+    'toxicity_racism': 'AutoMod has detected racism from ',
     'toxicity_sexism': 'Automod has detected sexism from ',
     'toxicity_harassment': 'Automod has detected harassment from ',
     'ban_message': '/timeout ',
-    'ban_time': '500',
+    'ban_time': ' 500',
     'plan_request': 'No Current Plan',
     'streamer_request': ' This is Jacy, He currently plays Valorant and lives in Canada',
     'song_request': 'Thanks for the song request!',
@@ -43,50 +43,64 @@ def handleEntity(entities):
                 retEnts.append(str(entity))
     return retEnts
 
+def handleReqEntity(entities):
+    if entities:
+        for _,info in entities.items():
+            if info[0]['confidence'] > 0.8:
+                return info[0]['body']
+    return None
+
+def handleTimeout(intent, authors):
+    retResp = []
+    resp = enabledCommands[intent] + f'@{authors}'
+    retResp.append(resp)
+    resp = enabledCommands['ban_message'] + f'{authors}' + enabledCommands['ban_time']
+    retResp.append(resp)
+    
+    return retResp
+
 def moderate(res, authors):
     retResp = []
     intent = str(res['intents'][0]['name'])
     confidence = res['intents'][0]['confidence']
     ent = res['entities']
-    if 'toxicity' in intent and confidence >= 0.8:
+    if 'toxicity' in intent and confidence >= 0.7:
         if 'racism' in intent:
             entTrait = handleEntity(ent)
             #for extreme racism, permaban
             if 'racism:racism' in entTrait:
                 resp = enabledCommands[intent] + f'@{authors}'
                 retResp.append(resp)
-                resp = '/ban' + f'{authors}'
+                resp = '/ban ' + f'{authors}'
                 retResp.append(resp)
             #if message is actually positive we skip it and don't moderate
             elif 'positivity:positivity' not in entTrait:
-                resp = enabledCommands[intent] + f'@{authors}'
-                retResp.append(resp)
-                resp = enabledCommands['ban_message'] + f'{authors}' + enabledCommands['ban_time']
-                retResp.append(resp)
+                retResp = handleTimeout(intent, authors)
         
         #handle sexism
         elif 'sexism' in intent:
-            resp = enabledCommands[intent] + f'@{authors}'
-            retResp.append(resp)
+            retResp = handleTimeout(intent, authors)
         
         #handle harassment
         elif 'harassment' in intent:
             resp = enabledCommands[intent] + f'@{authors}, AutoMod reminds you to keep chat clean'
             retResp.append(resp)
+            resp = enabledCommands['ban_message'] + f'{authors}' + enabledCommands['ban_time']
+            retResp.append(resp)
         
         #other non moderated answers for FAQ's handled here
         else:
-            resp = enabledCommands[intent] + f'@{authors}'
+            resp = enabledCommands[intent] + f'@{authors}, AutoMod reminds you to keep chat clean'
             retResp.append(resp)
     
     #handle song requests
     elif 'song_request' == intent:
-        requested = handleEntity(ent)
+        requested = handleReqEntity(ent)
         song_requests.append(requested)
         resp = enabledCommands[intent]
         retResp.append(resp)
     
-    else:
+    elif 'toxicity' not in intent:
         resp = enabledCommands[intent]
         retResp.append(resp)
     
@@ -162,10 +176,11 @@ def systemTest():
             break
         if testMsg[0] == '!':
             if 'update' in testMsg:
-                msg = updateFunc(testMsg)
+                sendMsg = updateFunc(testMsg)
+                print(sendMsg)
             elif 'reqList' in testMsg:
-                msg = reqListFunc(testMsg)
-            print(msg)
+                sendMsg = reqListFunc(testMsg)
+                print(sendMsg)
             continue
         
         res = witClient.message(testMsg)
@@ -183,7 +198,3 @@ if __name__ == "__main__":
         bot.run()
     else:
         print('Usage: pipenv run python autoBot.py <test|run>')
-
-#TODO:
-#record video
-#finish submission
