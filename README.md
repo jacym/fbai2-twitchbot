@@ -2,6 +2,9 @@
 An automated moderator service using Wit AI for Twitch live chat. Initially built for Facebook Hackathon.
 
 ## Setup
+
+Note: sometimes wit doesn't initialize with the pipenv. Eun `pipenv install wit` before the following to make sure its installed.
+
 ### Full Twitch Setup
 #### Requirements:
 - Python 3.8
